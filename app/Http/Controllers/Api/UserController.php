@@ -19,9 +19,11 @@ class UserController extends Controller
     {
         //
         // Optimize: Select only needed columns and eager load image relationship efficiently
+        // Optimize: Select only needed columns and eager load image relationship efficiently
         $users = User::select('id', 'name', 'email', 'phone', 'created_at', 'updated_at')
+            ->orderBy('name', 'asc')
             ->with(['image:id,url,imageable_id,imageable_type'])
-            ->paginate(20);
+            ->paginate(1000);
 
         return UserCollection::make(
             UserResource::collection($users)
@@ -42,9 +44,15 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = 'password123';
+        $data['password'] = bcrypt('password123'); // Ensure password is hashed
         $user = User::create($data);
-        return UserResource::make($user);
+
+        if ($request->hasFile('image')) {
+             $path = $this->compressAndStore($request->file('image'));
+             $user->image()->create(['url' => 'storage/' . $path]);
+        }
+
+        return UserResource::make($user->load('image'));
     }
 
     /**

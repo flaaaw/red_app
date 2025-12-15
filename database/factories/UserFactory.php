@@ -24,7 +24,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => Str::limit(fake()->name(), 20, ''),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->numerify('##########'),
             'email_verified_at' => now(),

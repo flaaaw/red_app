@@ -59,12 +59,15 @@ class DatabaseSeeder extends Seeder
         // But the test user is usually needed for login. 
         // Let's CREATE the test user separately, reusing one random image logic (will create another gen_ file).
         
-        User::factory()
-            ->has(Image::factory(), 'image')
-            ->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-                'phone' => '1234567890',
-            ]);
+        // Create Test User (optional, using a random image or a new one if available)
+        if (!User::where('email', 'test@example.com')->exists()) {
+            User::factory()
+                ->has(Image::factory(), 'image')
+                ->create([
+                    'name' => 'Test User',
+                    'email' => 'test@example.com',
+                    'phone' => '1234567890',
+                ]);
+        }
     }
 }

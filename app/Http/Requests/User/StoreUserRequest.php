@@ -28,6 +28,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:20',
+            'image' => 'nullable|image|max:2048',
         ];
     }
 }
