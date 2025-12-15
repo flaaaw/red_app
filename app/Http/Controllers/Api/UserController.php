@@ -27,6 +27,14 @@ class UserController extends Controller
             UserResource::collection($users)
         );
     }
+    
+    /**
+     * Get the authenticated user.
+     */
+    public function me(Request $request)
+    {
+        return $request->user();
+    }
 
     /**
      * Store a newly created resource in storage.

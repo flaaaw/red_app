@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/user', [UserController::class, 'me'])->middleware('auth:sanctum');
 
 
 use App\Http\Controllers\Api\Auth\AuthController;
